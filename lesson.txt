@@ -1,129 +1,84 @@
-#################################################################
-Artithmatic operation with variable ==> var1 var2 ==> var2=$(( $var1 <operation> <operator> ))
+1. Given two integers, X and Y , identify whether X>Y or X<Y  or X+Y .
+
+Output Format ==> Exactly one of the following lines:
+- X is less than Y
+- X is greater than Y
+- X is equal to Y
+
+Input Format
+Two lines containing one integer each ( and , respectively).
+No Constraints
+
 
 #!/bin/bash
-var1=10
-var2=$(( $var1 * 2 )) // $(( $var1 + 2 )) // $(( $var1 % 2 ))
-echo $var2
-
-#################################################################
-7. Conditional statements:
-	
-	a. if 
-	
-	if <condition>
-	then
-		<action>
-	fi
-----------------------------------------------	
-	b. if-else
-
-	if <condition>
-	then
-		<action>
-	else 
-		<action>
-	fi
-----------------------------------------------	
-	c. if-else-if (elif)
-
-	if <condition>
-	then
-		<action>
-	elif <condition>
-		<action>
-	fi
-#################################################################
-#################################################################
-
-#6. Task - find even odd number 
-
-#!/bin/bash
-echo "Enter the number:"
-read num
-mod=$(( $num % 2 ))
-if [ $mod -eq 0 ]
+#echo "input X"
+read X
+#echo "input Y"
+read Y
+if [ $X -gt $Y ]
+then
+    echo "X is greater than Y"
+elif [ $X -lt $Y ]
 then 
-	echo "$num is even"
+    echo "X is less than Y"
 else
-	echo "$num is odd"
+    echo "X is equal to Y"
 fi
 
-#################################################################
-#################################################################
+#######################################################################
+2. Read in one character from STDIN.
+If the character is 'Y' or 'y' display "YES".
+If the character is 'N' or 'n' display "NO".
+No other character will be provided as input.
 
-8. Bash to to take user input ( read)
-
-	algo:
-	1. user input  ==> read 
-	2. echo message [ Hi enter your name ]
-	3. read name
-	4. echo one message [ Hi , where do you live? ]
-	5. take place 
-	6. echo one message [ so you are from input ?]
-	7. echo one message [ have a nice day]
-
-# script to setup chat response with user
+Output Format ==> echo YES or NO to STDOUT.
 
 #!/bin/bash
-echo "Hi, May I know your name:"
-read input
-echo "Hi, $input, Nice to meet you. where do you live?"
-read place
-echo "Okay. So you are from $place?"
-read resp
-echo "okay. $input have a great day!!"
+read cha
+if [ $cha == "y" ] || [ $cha == "Y" ]
+then 
+    echo "YES"
+elif [ $cha == "n" ] || [ $cha == "N" ]
+then 
+    echo "NO"
+fi
+#######################################################################
+3. Given three integers (, , and ) representing the three sides of a triangle, identify whether the triangle is scalene, isosceles, or equilateral.
 
+If all three sides are equal, output EQUILATERAL.
+Otherwise, if any two sides are equal, output ISOSCELES.
+Otherwise, output SCALENE.
 
-#################################################################
-#################################################################
+Conditions: The sum of any two sides will be greater than the third/ sides will be non-zero
 
-9. Bash to handle string
-
-join/concatenate :
-a) String variables one after another
-
-	$var1 $var2 ==> "$var1$var2"  // "$var1 $var2" 
-#script1 to take seperate string inputs (first name and lastname) and add them
-
-#!/bin/bash
-echo "Hi, May I know your firstname:"
-read fnm 
-echo "Hi, May I know your lastname:"
-read lnm 
-name="$fnm $lnm"
-echo "Hi $name"
-	
-b) String variable after and before the string data
-#script2
+Output Format ==> One word: either "SCALENE" or "EQUILATERAL" or "ISOSCELES" (quotation marks excluded).
 
 #!/bin/bash
-echo "My country is: "
-read name
-echo "I love my $name, its very beautiful !!"
-	
-c) Combine using literal strings
+read X
+read Y
+read Z
+# checking conditions if the sides are non zero and sum of two is greater than the rest
 
-#script3
+if [ $(($X+$Y)) -gt $Z ] && [ $X -ne 0 ] && [ $Y -ne 0 ] && [ $Z -ne 0 ]
+then
+#this was expalined in the video
+    if [ $X -eq $Y ] && [ $Y -eq $Z ]
+        then 
+                echo "EQUILATERAL"
+    elif [ $X -eq $Y ] && [ $Y -ne $Z ] || [ $Y -eq $Z ] && [ $X -ne $Y ]
+        then 
+            echo "ISOSCELES"
+    else 
+            echo "SCALENE"
+    fi
+else 
+    echo "Invalid Input"
+fi
+#######################################################################
+
+4. Use a for loop to display the natural numbers from 1 to 50 .
 #!/bin/bash
-string="I am from India" 
-echo "Hello good morning. ${string} !!"
-
-d) Combine strings with any particular character
-
-#script4
-#!/bin/bash
-string="India" 
-string2="29"
-string3="Swastik Mukherjee"
-combo="$string3:$string:$string2"
-echo "I am ${combo} !!"
-
------------------------------------------------
-10. Task for next Day
-
-write 1 script to check greatest and least than from 5 input numbers
-
-#################################################################
-#################################################################
-
+for i in {1..50}
+    do
+    echo $i
+    done
