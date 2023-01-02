@@ -1,75 +1,91 @@
-############################################			############################################
+##############################################					##############################################
 
 
-						   LOOPS
+							Functions
 
 
-############################################			############################################
 
-		1. For Loop
-		2. while loop
+##############################################					##############################################
 
-	1. For loop : 
-	method of initialization , iteration is defined in the very first line
-	for ( i=1; i<=100, i ++) 
+						Define once, call it anywhere
+	Syntax: method 1
 
-	another way is 
-	for i in range {1..100} // after that conditional give one do and then define the actions . Finish happily with done //
+	<function name> () {
+	        <commands>
+	}
 	
-eg:	for i in range {1..100}
-	do
-		action
-	done
-	
-	2. While loop
-	method of initialization is defined, iteration is not in the very first line. We have to define in the body
+Alternatively same function can be written as : <function name> () { <commands> ; }
 
-eg:	i=1
-	while [ $i -le 99 ]
-	do
-		actions
-	mode of iteration  // after that conditional give one do and then define the actions . Finish happily with done //
-	done 
+	Syntax: method 2
+
+	function <function name> () {
+	        <commands>
+	}
+
+Alternatively same function can be wrutten as : function <function name> () { <commands> ; }
+
+points : When writing in one line, the commands must end with a semicolon (;), whether in bash scripts or the terminal directly
 
 
 
-To-Do. script for ping check 
+code 1:
 
-	take ips from a  range  ping 1 times each. echo if its reachable.
-
-	/dev/null where we can store any repsonse sent to STDIN/STDERR/STDOUT. 
-
-From Hackerrank ===>>
-
-1. Your task is to use for loops to display only odd natural numbers from 1 to 99.
-## using for loop
 
 #!/bin/bash
-for ((i=1; i<=99; i++))
-do
-    if [ $(($i%2)) -eq 1 ]
-    then
-        echo $i
-    fi
-done
- 
-## using while loop 
-   
-#!/bin/bash
-i=1
-while [ $i -le 99 ]
-do
-    if [ $(($i%2)) -eq 1 ]
-    then
-        echo $i
-    fi
-i=$(($i+1))
-done
+# Defining functions
+myname() {
+	   whoami
+	}
 
-Task ==>> script for ping check 
+# Invoking functions
+myname
+
+
+
+# alternate 
+
+myname () { echo $whoami ; }
+
+myname
+
+Pipelining :
+A pipeline is a sequence of one or more commands separated by one of the control operators ' | ' or ' |& '. The output of each command in the pipeline is connected via a pipe to the input of the next command. That is, each command reads the previous command's output.
+
+netstat:
+In computing, netstat is a command-line network utility that displays network connections for Transmission Control Protocol, routing tables, and a number of network interface and network protocol statistics.
+
+Parameters ==>
+-t	Display only TCP connections.		
+-n	Displays active TCP connections, however, addresses and port numbers are expressed numerically and no attempt is made to determine names.
+-u	Display only UDP connections.
+-p 	protocol	Shows connections for the protocol specified by protocol. In this case, protocol can be tcp, udp, tcpv6, or udpv6. If this parameter is used with -s to display statistics by protocol, protocol can be tcp, udp, icmp, ip, tcpv6, udpv6, icmpv6, or ipv6.
+
+
+code 2: check open_ports
 
 #!/bin/bash
-for i in range {100..104}
-do
-ping -c 1 192.168.104.$i 
-done
+# Defining functions
+
+check_ports () {
+	    netstat -tunlap | grep LISTEN | awk '{print $4"   "$7}'
+
+	}
+
+# Invoking functions
+
+check_ports
+
+code 3: check if a port is open
+
+netstat -tunlap | grep LISTEN | grep :80
+
+
+check_ports () {
+	    netstat -tunlap | grep LISTEN | grep :80 > /dev/null
+		if [[ $? -eq 0 ]]
+			then
+			echo "port is occupied"	
+		else
+		echo "port is free"
+
+	}
