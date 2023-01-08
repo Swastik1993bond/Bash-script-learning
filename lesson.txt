@@ -1,52 +1,90 @@
-#######################################		#######################################			
-					  CUT
-#######################################		#######################################	
+#########################################	 		#########################################
 
-The cut command in UNIX is a command for cutting out the sections from each line of files and writing the result to standard output.
+						  AWK
 
+#########################################			#########################################
 
-syntax:
+awk is used for manipulating data and generating reports
 
-	cut OPTION... [FILE]...    OPTION ==> -b(byte) || -c (column) ||  -f (field) -d (delimiter)
+It is a special programming language like perl but its widely used under Linux
 
+By default few features will be available but to access all you need to install it seperately
 
-	1. example: cut -b a.txt [(s)-(l)/(s),(l)/(l)]
-	b stands for byte... print output based on bytes
-
-	2. $cut -c [(s)-(l)/(s),(l)/(l)] filename    
-	s = start l= end  Tabs and backspaces are treated as character ;  necessary to specify list of character numbers
-
-	3. $cut -f (field):
-	-c option is useful for fixed-length lines. but if there is no fixed lenght, we need to work with -f
-	comes with a delimiter -d
-
-	$cut -d "delimiter" -f (field number) file.txt
-
-	if no -d then print the whole 
-
-	cut -d " " -f 1 salary.txt
-	
-	
-use cases
-
-how
-now
-brown
-cow
-
-
-John,Smith,34,London
-Arthur,Evans,21,Newport
-George,Jones,32,Truro
-
-101 108	115
-102 109	116
-103 110	117
-104 111	118
-105 112	119
-106 113	120
-107 114	121
+Major uses in pattern scanning and data processing
 
 
 
+	syntax :	awk options 'actions_area' input_file
 
+options = -F fs  ==> seperate field 
+	  -f program_file ==> create a program file and use it during runtime
+	  -v  ==> variable
+
+actions_area  ==> selection_pattern { actions }
+
+operations  ==> 
+1. Scanning 
+2. Split 
+3. Comparison between two inputs 
+4. Action on Match
+
+Type ==> 
+
+a. print formatted  & Insert  ==> printf
+b. logic opertion = > Artithmatic   String
+c. Conditional => when until if-else loops
+
+student.txt
+Name From Money
+Alan Local 100
+Donald Mumbai 80
+Trump Delhi 70
+
+Ajay Surat 30
+Jerry Kolkata 50
+Type a.
+
+print the entire table ==>  awk '{print}'  student.txt
+
+print specific column ==> awk '{print $1}'  student.txt
+
+print specific multiple columns ==>  awk '{print $1,$3}'  student.txt
+
+insert row data into the end ==> awk 'END {printf "Ajay Surat 30\n"} {print}' student.txt
+
+insert row data into the begining ==> awk 'BEGIN {printf "Ajay Surat 30\n"} {print}' student.txt
+
+print specific row (NR==2)==> awk 'NR==2 {print $0}'  student.txt
+
+insert row data into the specific row(here is 3) ==> awk 'NR==3 {printf "Ajay Surat 30\n"} {print}' student.txt
+
+save the new file ==> awk 'NR==3 {printf "Ajay Surat 30\n"} {print}' student.txt > student-new.txt
+
+insert row data into the specific row(here is 3) using variable (-v) ==> awk -v name=Jerry 'NR==3 {printf "%s\n",name} {print}' student-new.txt
+
+insert row data into the specific row(here is 3) using multiple variables (-v) ==> awk -v name=Jerry -v from=Kolkata -v money=50 'NR==3 {printf "%s %s %s\n",name,from,money} {print}' student-new.txt
+
+matching pattern:
+
+fine the row having entry ajay ==> awk '/Ajay/ {print}' New-Student.txt  || awk '/Ajay/ {print NR,$0 }' New-Student.txt
+
+
+server use cases 
+
+docker images filter using awk 
+
+docker images
+REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+python       latest    75cc8d87cc34   2 weeks ago   932MB
+nginx        latest    1403e55ab369   2 weeks ago   142MB
+ubuntu       latest    6b7dfa7e8fdb   4 weeks ago   77.8MB
+
+using awk ==> 
+
+docker images | awk 'NR==2,NR==4{print $1,$7}'
+python 932MB
+nginx 142MB
+ubuntu 77.8MB
+
+
+To be contd....
