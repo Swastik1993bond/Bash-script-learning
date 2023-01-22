@@ -1,61 +1,126 @@
-#################################				#################################
-					
+syntax :	awk options 'actions_area' input_file
 
-						Grep 
+-F FS  ==> seperate field
+
+-f program_file ==> create a program file and use it during runtime
+
+-v
+
+Default variables ==>
+
+1. NF: used to count the number of fields in the input parameter passed.
+
+awk '{print $NF}' file_name.txt  ==> to print the last column
+
+2. NR: helps to count the number of input records. Generally, lines are considered as records.
+
+3. FS: here we need to specify the field delimiter. By default, white space is considered a delimiter if not mentioned. 
+    It is used to divide the fields based on the input lines.
+
+filter the users name from the file passwd ==> cat /etc/passwd | awk 'FS=":" {printf "%s"} ;{print $1}'
+
+similar can be achieved wuith -F
+
+cat /etc/passwd | awk -F : '{printf "%s"} ;{print $1}'
+
+4. OFS: used to store the output field separator when AWK prints the output. 
+     A blank space character is treated as a default field separator
+
+syntax ==> awk 'OFS=”field_separator” {print $n, $m, $o}
+
+eg: date with seperator '/' ==> date | awk 'OFS="/" {print $2, $3, $6}'
 
 
-#################################				#################################
+5. BEGIN & END : BEGIN to set actions before any records have been executed. 
+		We can also print any data that we want to print before the records are processed.
+		END To count the number of lines in the input file, we can use the END variable
 
-Global regular expression print
+7. RS: used to store the record separator in the current input parameter. 
+    By Default, a new line is considered to be a record separator if no specified variable is mentioned.
 
-syntax:
-
-grep - print lines matching a pattern/expression
-
-grep [OPTIONS] PATTERN [FILE...]
+8. ORS: used to store the output record separator that is separated by AWK command to print the output lines. 
+     The new line character is treated as the default record separator.
 
 
-examples:
+Suppose you have a file called emp.data that contains 
 
-$ cat 1.txt 
-Howl
-Owl
-wow
-Noun
-cow
-wow
-Cow
-bowl
+the name
+pay rate in dollars per hour and
+number of hours worked 
 
-Examples:
+one employee record per line:
 
-grep -w  Pattern a_file ==> matching words
+Beth 4.00 0
+Dan 3.75 0
+Kathy 4.00 10
+Mark 5.00 20
+Mary 5.50 22
+Susie 4.25 18 
 
-grep -i  Pattern a_file ==> matching words non case sensistive
+code: find out the employee having 4.00 wage
 
-grep -v  Pattern a_file ==> show the records non matching(negative)
+awk '{if ($2=="4.00") {print "......\n"; print "Name :",$1; print "Hours worked:", $3} }' emp.data
 
-grep -l Pattern * ==> search all the records with matching 
+find out the employee having more than 4.00 wage
 
-grep -c  a_file/* ==> count no of matching 
+awk '{if ($2>"4.00") {print "......\n"; print "Name :",$1; print "Hours worked:", $3} }' emp.data 
 
-grep -n  a_file ==> line number fo the macthing cases
+student of devops/others engineers data contains:
 
-grep -E 'pattern1|pattern2|pattern3' ==> grep multiple patterns 
+ID	Name	Age	Subject
+111	Farhaan	18	DevOps
+89	Alex	21	SecOps
+92	Ronn	22	IT
+100	Robert	23	Commerce
+102	Samantha	20	Cloud-Admin
+105	Bob	21	Maths
 
-######################
- 
-Problem : Write a bash script to find the containerd process number and set as variable
 
-cat append.sh 
-#!/bin/bash
-touch {1..5}.txt
-ls
-echo -e "Howl\nOwl\nwow\nNoun\ncow\nwow\nCow\nbowl" >> 1.txt
-cat 1.txt
+code: print the details of the student with ID 100 using if condition in AWK
 
-created another file 2.txt
+############
+IF_ELSE:
+############
 
-echo -e "Howl\nOwl\nwow\nNoun\ncow" >> 2.txt
+if: awk '{if (condition) {statement} }' [input_file]
 
-Apply the commands under Examples and test
+if -else: awk '{ if (condition) {command1} else {command2} }' [input_file]
+
+awk '{
+  if (condition) 
+    {command1} 
+  else 
+    {command2}
+}' [input_file]
+
+
+code: to get all the student's name and their department whose age is less than or equal to 20 years
+
+awk '{if ($3<"20") { print "Student "$2", Department "$4", is 20 years old} else {print "Student "$2", Department "$4", is more than 20 years old }' student.txt
+
+##########
+loops:
+##########
+
+awk 'BEGIN { LOOP_CONDITION ACTION }'
+
+##########
+For loop:
+##########
+
+for (initialization; condition; increment/decrement)
+   action
+
+code: prints 1 to 50 using for loop
+
+awk 'BEGIN {for (i=1;i<=50; i++) print i}'
+
+##########
+while
+##########
+
+while (condition)
+   action
+
+code: 
+awk 'BEGIN {i=1; while (i<=50) { print i; i++} }'
