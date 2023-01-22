@@ -1,126 +1,69 @@
-syntax :	awk options 'actions_area' input_file
+############################				############################
 
--F FS  ==> seperate field
+					Array
 
--f program_file ==> create a program file and use it during runtime
+############################				############################
 
--v
+ordered data 	elements==>1st 2nd 3rd 4th...
 
-Default variables ==>
+list=(1st 2nd 3rd 4th)  ==> declare with a space
 
-1. NF: used to count the number of fields in the input parameter passed.
+list=(2 5 8 0)
 
-awk '{print $NF}' file_name.txt  ==> to print the last column
+get value echo ${arrname[index]}
 
-2. NR: helps to count the number of input records. Generally, lines are considered as records.
+echo ${list[@]}
 
-3. FS: here we need to specify the field delimiter. By default, white space is considered a delimiter if not mentioned. 
-    It is used to divide the fields based on the input lines.
+get values of individual materials= arrname[index]
 
-filter the users name from the file passwd ==> cat /etc/passwd | awk 'FS=":" {printf "%s"} ;{print $1}'
+list[0]
+list[3]
 
-similar can be achieved wuith -F
+print a range:
+echo ${list[@]:1}
 
-cat /etc/passwd | awk -F : '{printf "%s"} ;{print $1}'
+length o the array:
+echo ${#list[@]}
 
-4. OFS: used to store the output field separator when AWK prints the output. 
-     A blank space character is treated as a default field separator
+static assignment==>
 
-syntax ==> awk 'OFS=”field_separator” {print $n, $m, $o}
+assign values by index in array==> arrname[index]='value'
+assign values by name in array==> arrname[value]='new_value'
 
-eg: date with seperator '/' ==> date | awk 'OFS="/" {print $2, $3, $6}'
+dynamic assignment==>
 
+Create an array from the output of other command, for example use seq to get a range from 1 to 9:  arrname=(`seq start end`)
 
-5. BEGIN & END : BEGIN to set actions before any records have been executed. 
-		We can also print any data that we want to print before the records are processed.
-		END To count the number of lines in the input file, we can use the END variable
+Create and assign values in array are same for digits and strings
 
-7. RS: used to store the record separator in the current input parameter. 
-    By Default, a new line is considered to be a record separator if no specified variable is mentioned.
-
-8. ORS: used to store the output record separator that is separated by AWK command to print the output lines. 
-     The new line character is treated as the default record separator.
+list=(`seq 1 9`)
 
 
-Suppose you have a file called emp.data that contains 
-
-the name
-pay rate in dollars per hour and
-number of hours worked 
-
-one employee record per line:
-
-Beth 4.00 0
-Dan 3.75 0
-Kathy 4.00 10
-Mark 5.00 20
-Mary 5.50 22
-Susie 4.25 18 
-
-code: find out the employee having 4.00 wage
-
-awk '{if ($2=="4.00") {print "......\n"; print "Name :",$1; print "Hours worked:", $3} }' emp.data
-
-find out the employee having more than 4.00 wage
-
-awk '{if ($2>"4.00") {print "......\n"; print "Name :",$1; print "Hours worked:", $3} }' emp.data 
-
-student of devops/others engineers data contains:
-
-ID	Name	Age	Subject
-111	Farhaan	18	DevOps
-89	Alex	21	SecOps
-92	Ronn	22	IT
-100	Robert	23	Commerce
-102	Samantha	20	Cloud-Admin
-105	Bob	21	Maths
-
-
-code: print the details of the student with ID 100 using if condition in AWK
-
-############
-IF_ELSE:
-############
-
-if: awk '{if (condition) {statement} }' [input_file]
-
-if -else: awk '{ if (condition) {command1} else {command2} }' [input_file]
-
-awk '{
-  if (condition) 
-    {command1} 
-  else 
-    {command2}
-}' [input_file]
-
-
-code: to get all the student's name and their department whose age is less than or equal to 20 years
-
-awk '{if ($3<"20") { print "Student "$2", Department "$4", is 20 years old} else {print "Student "$2", Department "$4", is more than 20 years old }' student.txt
-
-##########
 loops:
-##########
 
-awk 'BEGIN { LOOP_CONDITION ACTION }'
+print each element of the array using bash ==>
 
-##########
-For loop:
-##########
+using for loop:
 
-for (initialization; condition; increment/decrement)
-   action
+#!/bin/bash
 
-code: prints 1 to 50 using for loop
+list=(`seq 1 20`)
 
-awk 'BEGIN {for (i=1;i<=50; i++) print i}'
+for i in "${list[@]}"
 
-##########
-while
-##########
+do
+	echo "$i"
+done
 
-while (condition)
-   action
+using while loop:
 
-code: 
-awk 'BEGIN {i=1; while (i<=50) { print i; i++} }'
+#!/bin/bash
+
+list=(`seq 1 20`)
+i=0
+while [ $i -lt "${#list[@]}" ]
+
+do
+	echo ${arr[$i]}
+i=`expr $i + 1`
+done
